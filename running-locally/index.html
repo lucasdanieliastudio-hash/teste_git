@@ -715,6 +715,13 @@
 </div>
 </div>
 <p>Confira com <code>poetry --version</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Alternativa pelo pip</p>
+<p>Se o instalador acima não funcionar, use <code>py -m pip install --user poetry</code>
+(Windows) ou <code>python3 -m pip install --user poetry</code> (Linux/macOS). Se o
+terminal não reconhecer <code>poetry</code>, troque por <code>py -m poetry</code> em todos os
+comandos (ex.: <code>py -m poetry run task app</code>).</p>
+</div>
 <h2 id="passo-a-passo">Passo a passo</h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># 1. instalar as dependências (cria o .venv dentro do projeto)</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>poetry<span class="w"> </span>config<span class="w"> </span>virtualenvs.in-project<span class="w"> </span><span class="nb">true</span>
@@ -776,7 +783,16 @@
 <dt><strong>"Nao consegui falar com a API do OpenF1"</strong></dt>
 <dd>Verifique a internet. A OpenF1 tem limite de requisições por minuto; espere um pouco e recarregue.</dd>
 <dt><strong><code>ModuleNotFoundError: No module named 'f1'</code></strong></dt>
-<dd>Rode <code>poetry install</code> de novo na pasta do projeto e use sempre <code>poetry run ...</code>.</dd>
+<dd>O projeto não foi instalado no ambiente (geralmente porque o <code>poetry install</code>
+  parou no meio). Rode <code>poetry install --only-root</code> na pasta do projeto, pare o
+  Streamlit com <code>Ctrl+C</code> e abra de novo com <code>poetry run task app</code>. Pelo VS Code
+  (terminal integrado ou F5) isso já não acontece: o <code>src/</code> entra no <code>PYTHONPATH</code>.</dd>
+<dt><strong><code>'poetry' não é reconhecido como nome de cmdlet</code></strong></dt>
+<dd>O Poetry não está instalado ou não está no PATH. Instale com
+  <code>py -m pip install --user poetry</code> e use <code>py -m poetry ...</code>.</dd>
+<dt><strong>A instalação para no meio (ex.: <code>pyyaml</code>)</strong></dt>
+<dd>Esse pacote é só da documentação. Rode <code>poetry install --with dev</code> para ter
+  o dashboard e os testes funcionando.</dd>
 <dt><strong>A temporada atual aparece vazia</strong></dt>
 <dd>Os dados entram na OpenF1 conforme as corridas acontecem. Escolha uma temporada anterior.</dd>
 </dl>
