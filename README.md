@@ -46,12 +46,38 @@ docs/                 # documentacao MkDocs
 
 ## Como rodar
 
-```bash
-poetry install --with dev,docs
-poetry run task app
-```
+Pre-requisitos: Python 3.12 ou mais novo e Git.
 
-Abra http://localhost:8501
+1. Instale o Poetry (so uma vez por computador):
+
+   ```bash
+   # Windows (PowerShell)
+   py -m pip install --user poetry
+
+   # Linux / macOS
+   python3 -m pip install --user poetry
+   ```
+
+2. Na pasta do projeto, instale as dependencias e abra o dashboard:
+
+   ```bash
+   poetry install --with dev,docs
+   poetry run task app
+   ```
+
+3. Abra http://localhost:8501
+
+No Windows, se o terminal disser que `poetry` nao e reconhecido, use
+`py -m poetry` no lugar de `poetry` (ex.: `py -m poetry run task app`).
+
+### Problemas comuns
+
+| Erro | Solucao |
+|---|---|
+| `poetry` nao e reconhecido | Use `py -m poetry ...` ou feche e abra o terminal |
+| `ModuleNotFoundError: No module named 'f1'` | Rode `poetry install --only-root` e abra o app de novo |
+| Instalacao para no meio (ex.: `pyyaml`) | Rode `poetry install --with dev` (sem as docs) |
+| Comando rodado na pasta errada | Use `cd` ate a pasta que tem o `pyproject.toml` |
 
 ## Testes e qualidade
 
@@ -75,3 +101,4 @@ A cada push na branch main o CI publica a documentacao no GitHub Pages.
 ## Fonte dos dados
 
 [OpenF1](https://openf1.org) - API aberta e nao oficial de dados de Formula 1.
+# teste_git

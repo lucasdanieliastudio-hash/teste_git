@@ -4,6 +4,12 @@
   "python.analysis.typeCheckingMode": "basic",
   "python.analysis.extraPaths": ["${workspaceFolder}/src"],
 
+  // Terminais do VS Code enxergam o pacote f1 mesmo se o projeto
+  // nao tiver sido instalado no ambiente (evita ModuleNotFoundError: f1)
+  "terminal.integrated.env.windows": { "PYTHONPATH": "${workspaceFolder}/src" },
+  "terminal.integrated.env.osx": { "PYTHONPATH": "${workspaceFolder}/src" },
+  "terminal.integrated.env.linux": { "PYTHONPATH": "${workspaceFolder}/src" },
+
   // Ruff formata e organiza os imports ao salvar
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",

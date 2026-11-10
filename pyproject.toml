@@ -53,6 +53,7 @@ indent-style = "space"
 # ---------------------------------------------------------------- Pytest
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["src"]
 addopts = "--cov=src/f1 --cov-report=term-missing --cov-fail-under=50 -m 'not integration'"
 markers = ["integration: testes que chamam a API real do OpenF1 (precisam de internet)"]
 

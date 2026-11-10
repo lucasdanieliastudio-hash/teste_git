@@ -8,6 +8,7 @@
       "module": "streamlit",
       "args": ["run", "src/f1/dashboard.py"],
       "cwd": "${workspaceFolder}",
+      "env": { "PYTHONPATH": "${workspaceFolder}/src" },
       "justMyCode": true
     },
     {
@@ -17,6 +18,7 @@
       "module": "pytest",
       "args": ["tests/unit", "--no-cov", "-v"],
       "cwd": "${workspaceFolder}",
+      "env": { "PYTHONPATH": "${workspaceFolder}/src" },
       "justMyCode": false
     },
     {

@@ -22,6 +22,12 @@ Instalando o Poetry:
 
 Confira com `poetry --version`.
 
+!!! note "Alternativa pelo pip"
+    Se o instalador acima não funcionar, use `py -m pip install --user poetry`
+    (Windows) ou `python3 -m pip install --user poetry` (Linux/macOS). Se o
+    terminal não reconhecer `poetry`, troque por `py -m poetry` em todos os
+    comandos (ex.: `py -m poetry run task app`).
+
 ## Passo a passo
 
 ```bash
@@ -61,7 +67,18 @@ O navegador abre em <http://localhost:8501>. Se não abrir, acesse o endereço m
 : Verifique a internet. A OpenF1 tem limite de requisições por minuto; espere um pouco e recarregue.
 
 **`ModuleNotFoundError: No module named 'f1'`**
-: Rode `poetry install` de novo na pasta do projeto e use sempre `poetry run ...`.
+: O projeto não foi instalado no ambiente (geralmente porque o `poetry install`
+  parou no meio). Rode `poetry install --only-root` na pasta do projeto, pare o
+  Streamlit com `Ctrl+C` e abra de novo com `poetry run task app`. Pelo VS Code
+  (terminal integrado ou F5) isso já não acontece: o `src/` entra no `PYTHONPATH`.
+
+**`'poetry' não é reconhecido como nome de cmdlet`**
+: O Poetry não está instalado ou não está no PATH. Instale com
+  `py -m pip install --user poetry` e use `py -m poetry ...`.
+
+**A instalação para no meio (ex.: `pyyaml`)**
+: Esse pacote é só da documentação. Rode `poetry install --with dev` para ter
+  o dashboard e os testes funcionando.
 
 **A temporada atual aparece vazia**
 : Os dados entram na OpenF1 conforme as corridas acontecem. Escolha uma temporada anterior.
