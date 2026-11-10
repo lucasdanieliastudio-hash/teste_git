@@ -1,0 +1,97 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [main, dev]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: "3.12"
+  POETRY_VIRTUALENVS_IN_PROJECT: true
+
+jobs:
+  lint:
+    name: Lint e formatacao
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Instalar Poetry
+        run: pipx install "poetry>=2.0,<3.0"
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: poetry
+
+      - name: Instalar dependencias
+        run: poetry install --with dev --no-interaction
+
+      - name: Ruff check
+        run: poetry run ruff check .
+
+      - name: Ruff format --check
+        run: poetry run ruff format . --check
+
+  test:
+    name: Testes unitarios
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Instalar Poetry
+        run: pipx install "poetry>=2.0,<3.0"
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: poetry
+
+      - name: Instalar dependencias
+        run: poetry install --with dev --no-interaction
+
+      - name: Pytest com cobertura
+        run: poetry run pytest tests/unit/ --cov-report=xml
+
+      - name: Publicar relatorio de cobertura
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-report
+          path: coverage.xml
+
+  docs:
+    name: Publicar documentacao
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Instalar Poetry
+        run: pipx install "poetry>=2.0,<3.0"
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: poetry
+
+      - name: Instalar dependencias de docs
+        run: poetry install --only docs --no-root --no-interaction
+
+      - name: Configurar autor do commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Deploy no GitHub Pages
+        run: poetry run mkdocs gh-deploy --force --strict
